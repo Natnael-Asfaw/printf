@@ -1,66 +1,48 @@
-#include <stdarg.h>
-#include <stdio.h>
-#include <unistd.h>
 #include "main.h"
 
 /**
- * _printf - prints a string in a formatted way
- * @format: string to print (char *)
- * @...: variadic parameters (unknown)
- * Return: number of characters printed
+ * _printf - prints anything
+ * @format: the format string
+ * Return: number of bytes printed
  */
-
-
-
 int _printf(const char *format, ...)
 {
-	int i = 0;
-	int count = 0;
-	int value = 0;
-	va_list args;
-	va_start(args, format);
-	int (*f)(va_list);
+	int sum = 0;
+	va_list ap;
+	char *p, *start;
+	params_t params = PARAMS_INIT;
 
-	/*Prevent parsing a null pointer*/
-	if (format == NULL)
+	va_start(ap, format);
+
+	if (!format || (format[0] == '%' && !format[1]))
 		return (-1);
-
-	/*Print each character of string*/
-	while (format[i])
+	if (format[0] == '%' && format[1] == ' ' && !format[2])
+		return (-1);
+	for (p = (char *)format; *p; p++)
 	{
-		if (format[i] != '%')
+		init_params(&params, ap);
+		if (*p != '%')
 		{
-			value = write(1, &format[i], 1);
-			count = count + value;
-			i++;
+			sum += _putchar(*p);
 			continue;
 		}
-
-		if (format[i] == '%')
+		start = p;
+		p++;
+		while (get_flag(p, &params)) /* while char at p is flag char */
 		{
-			f = check_specifier(&format[i + 1]);
-			if (f != NULL)
-			{
-				value = f(args);
-				count = count + value;
-				i = i + 2;
-				continue;
-			}
-
-			if (format[i + 1] == '\0')
-			{
-				break;
-			}
-
-			if (format[i + 1] != '\0')
-			{
-				value = write(1, &format[i + 1], 1);
-				count = count + value;
-				i = i + 2;
-				continue;
-			}
+			p++; /* next char */
 		}
+		p = get_width(p, &params, ap);
+		p = get_precision(p, &params, ap);
+		if (get_modifier(p, &params))
+			p++;
+		if (!get_specifier(p))
+			sum += print_from_to(start, p,
+					params.l_modifier || params.h_modifier ? p - 1 : 0);
+		else
+			sum += get_print_func(p, ap, &params);
 	}
-
-	return (count);
+	_putchar(BUF_FLUSH);
+	va_end(ap);
+	return (sum);
 }
