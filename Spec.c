@@ -1,6 +1,6 @@
 #include "main.h"
 /**
- * spec - prints a char's ascii value in uppercase hex
+ * s - prints a char's ascii value in uppercase hex
  * @c: char to print
  * Return: number of chars printed (always 2)
  */

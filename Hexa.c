@@ -38,7 +38,7 @@ count++;
 return (count);
 }
 /**
- * print_x - takes an unsigned int and prints it in lowercase hex notation
+ * prente_x - takes an unsigned int and prints it in lowercase hex notation
  *@args: unsigned int to print
  * Return: number of digits printed
 */
@@ -47,7 +47,7 @@ int prente_x(va_list args)
 return (print_hex(va_arg(args, unsigned int), 0));
 }
 /**
- * print_X - takes am unsigned int and prints it in uppercase hex notation
+ * prente_X - takes am unsigned int and prints it in uppercase hex notation
  * @args: unsigned int to print
  * Return: number of digits printed
 */

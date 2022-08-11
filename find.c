@@ -1,6 +1,6 @@
 #include "main.h"
 /**
- * find - Receives the main string and all the necessary parameters to
+ * finder - Receives the main string and all the necessary parameters to
  * print a formated string.
  * @format: A string containing all the desired characters.
  * @selects: A list of all the posible functions.
